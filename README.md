@@ -1,1 +1,1 @@
-Snake Game writed with ScalaJS
+Snake Game written with ScalaJS

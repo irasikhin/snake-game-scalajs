@@ -1,5 +1,16 @@
-target/
-.cache
-.classpath
+# eclipse
 .project
-.settings/
+.classpath
+.settings
+
+# idea
+.idea
+*.iml
+*.iws
+*.ipr
+
+# java
+*.class
+
+# sbt
+target/
