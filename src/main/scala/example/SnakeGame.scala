@@ -22,12 +22,6 @@ object SnakeGame extends js.JSApp {
   val SNAKE = "#1D5FDB"
   val SNAKE_HEAD = "#0B157D"
 
-  trait Observable {
-    def on(event: String)
-
-    def notify(event: String)
-  }
-
   def main(): Unit = {
     val canvas = dom.document.createElement("canvas").cast[HTMLCanvasElement]
     canvas.width = (0.3 * g.window.innerWidth.cast[Int]).toInt
