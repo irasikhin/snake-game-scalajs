@@ -1,3 +1,5 @@
+import org.scalatra.sbt.ScalatraPlugin
+
 lazy val commonSettings = Seq(
   scalaVersion := "2.11.6",
   organization := "ru.ir",
@@ -11,8 +13,6 @@ lazy val commonSettings = Seq(
     "bintray/non" at "http://dl.bintray.com/non/maven"
   ))
 
-name := "Example"
-
 val ScalatraVersion = "2.3.0"
 
 persistLauncher in Compile := true
@@ -23,6 +23,7 @@ testFrameworks += new TestFramework("utest.runner.Framework")
 
 lazy val site = (project in file("site")).
   settings(Defaults.coreDefaultSettings: _*).
+  settings(ScalatraPlugin.scalatraWithJRebel: _*).
   settings(commonSettings: _*).
   settings(
     name := "site",
@@ -31,6 +32,8 @@ lazy val site = (project in file("site")).
       "com.lihaoyi" %% "scalatags" % "0.4.6",
       "com.lihaoyi" %% "upickle" % "0.2.8",
       "com.lihaoyi" %% "autowire" % "0.2.5",
+      "org.eclipse.jetty" % "jetty-webapp" % "8.1.8.v20121106" % "container",
+      "org.eclipse.jetty.orbit" % "javax.servlet" % "3.0.0.v201112011016" % "container;provided;test" artifacts Artifact("javax.servlet", "jar", "jar"),
       "javax.servlet" % "javax.servlet-api" % "3.1.0" % "provided",
       "org.scalatra" %% "scalatra-specs2" % ScalatraVersion % "test",
       "ch.qos.logback" % "logback-classic" % "1.0.6" % "runtime"))
