@@ -1,0 +1,21 @@
+.center {
+    margin: 0 auto;
+}
+
+.battle-field {
+    margin: 0 auto;
+}
+
+.results {
+    position: relative;
+    width: 50%;
+    height:25%;
+    left:25%;
+    bottom: 75%;
+    border-color: #292B30;
+}
+
+.results .panel-heading {
+    background-color: #292B30;
+    border-color: #292B30;
+}
