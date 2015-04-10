@@ -9,30 +9,30 @@ class Snake(grid: Grid) {
   var direction: Int = 0
   var crashed = false
 
-  def draw(): Unit = {
+  private def draw(snake: Array[Cell]): Unit = {
     grid.put(snake.last, SNAKE_HEAD)
     snake.init.foreach(cell => grid.put(cell, SNAKE))
   }
 
-  def hide(): Unit = {
+  private def hide(snake: Array[Cell]): Unit = {
     snake.foreach(grid.clear)
   }
 
   def setDirection(direction: Int): Unit = {
-    if (!(this.direction == RIGHT && direction == LEFT ||
-      this.direction == LEFT && direction == RIGHT ||
+    if (!(this.direction == RIGHT && direction == LEFT || this.direction == LEFT && direction == RIGHT ||
       this.direction == UP && direction == DOWN) && !(this.direction == DOWN && direction == UP)) {
       this.direction = direction
     }
   }
 
   def step(): Unit = {
-    hide()
+    val oldSnake = snake
+    val last = oldSnake.last
     val cell = this.direction match {
-      case UP => Cell(snake.last.x, snake.last.y - 1)
-      case DOWN => Cell(snake.last.x, snake.last.y + 1)
-      case LEFT => Cell(snake.last.x - 1, snake.last.y)
-      case RIGHT => Cell(snake.last.x + 1, snake.last.y)
+      case UP => Cell(last.x, last.y - 1)
+      case DOWN => Cell(last.x, last.y + 1)
+      case LEFT => Cell(last.x - 1, last.y)
+      case RIGHT => Cell(last.x + 1, last.y)
     }
     grid.get(cell) match {
       case FOOD => snake = snake.:+(cell)
@@ -40,6 +40,7 @@ class Snake(grid: Grid) {
       case WALL => crashed = true // game over
       case SNAKE => crashed = true // game over
     }
-    draw()
+    hide(oldSnake)
+    draw(snake)
   }
 }
