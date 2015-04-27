@@ -4,12 +4,11 @@ import org.scalajs.dom
 import org.scalajs.dom._
 import org.scalajs.dom.ext._
 import org.scalajs.dom.raw.{Event, HTMLCanvasElement}
-import org.scalajs.jquery._
 import ru.ir.SnakeGame._
 
 import scala.scalajs.js
-import scalatags.JsDom.all._
 import scala.scalajs.js.Dynamic.{global => g}
+import scalatags.JsDom.all._
 
 class GameContext {
   var interval = 500
@@ -63,11 +62,13 @@ class Game(node: Element, canvas: HTMLCanvasElement) {
   def end() = {
     dom.clearInterval(interval)
     g.removeEventListener("keyup", keysHandler, false)
-    jQuery(resultBlock).removeClass("hide")
+    context.font = "40px Arial"
+    context.textAlign = "center"
+    context.fillStyle = "black"
+    context.fillText("GAME OVER", 200, 200)
   }
 
   def restart() = {
-    jQuery(resultBlock).addClass("hide")
     grid = new Grid(canvas.width, canvas.height)
     bounds = new Walls(grid)
     food = new Food(grid)
@@ -81,18 +82,6 @@ class Game(node: Element, canvas: HTMLCanvasElement) {
     restart()
   }
 
-  val resultBlock = div(`class` := "hide panel panel-primary results",
-    div(`class` := "panel-heading", "Results"),
-    div(`class` := "panel-body",
-      div("Panel content", `class` := "row"),
-      div(restartButton, `class` := "row")
-    )
-  ).render
-
-  val battleFieldBlock = div(`class` := "battle-field",
-    width := 500,
-    height := 500,
-    canvas, resultBlock)
-
+  val battleFieldBlock = div(`class` := "battle-field", width := 500, height := 500, canvas)
   node.appendChild(battleFieldBlock.render)
 }
