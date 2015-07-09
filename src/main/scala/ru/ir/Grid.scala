@@ -35,13 +35,13 @@ class Grid(width: Int, height: Int)(implicit context: CanvasRenderingContext2D) 
     bucket -= cell
   }
 
-  def center(): Cell = {
+  def getCenterCell: Cell = {
     val i: Int = vertical / 2
     val j: Int = horizontal / 2
     Cell(j, i)
   }
 
-  def freeCells(): Seq[Cell] = for {
+  def getFreeCells: Seq[Cell] = for {
     i <- 0 until vertical
     j <- 0 until horizontal
     cell = Cell(j, i)

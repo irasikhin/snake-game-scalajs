@@ -17,6 +17,7 @@ class GameContext {
 
 class Game(node: Element, canvas: HTMLCanvasElement) {
   implicit val context = canvas.getContext("2d").cast[CanvasRenderingContext2D]
+  val GAME_OVER = "GAME OVER"
 
   var grid = new Grid(canvas.width, canvas.height)
   var bounds = new Walls(grid)
@@ -65,7 +66,7 @@ class Game(node: Element, canvas: HTMLCanvasElement) {
     context.font = "40px Arial"
     context.textAlign = "center"
     context.fillStyle = "black"
-    context.fillText("GAME OVER", 200, 200)
+    context.fillText(GAME_OVER, canvas.width / 2, canvas.height / 2)
   }
 
   def restart() = {

@@ -7,7 +7,7 @@ class Food(grid: Grid) {
   val random = scala.util.Random
 
   private def generate(): Cell = {
-    val cells = grid.freeCells()
+    val cells = grid.getFreeCells
     val cell = cells(random.nextInt(cells.size))
     grid.put(cell, FOOD)
     cell

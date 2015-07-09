@@ -4,7 +4,7 @@ import ru.ir.SnakeGame._
 
 class Snake(grid: Grid) {
   val baseSize = 3
-  private val center = grid.center()
+  private val center = grid.getCenterCell
   var snake: Array[Cell] = Array(center, Cell(center.x, center.y - 1), Cell(center.x, center.y - 2))
   var direction: Int = 0
   var crashed = false
