@@ -8,3 +8,5 @@ To run app
 ```
 
 then open ./index-fastopt.html in browser.
+
+Try to play [demo](http://irasikhin.github.io/snake-game-scalajs/)
