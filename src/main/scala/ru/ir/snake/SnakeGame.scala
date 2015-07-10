@@ -1,4 +1,4 @@
-package ru.ir
+package ru.ir.snake
 
 import org.scalajs.dom
 import org.scalajs.dom.ext._
@@ -26,9 +26,7 @@ object SnakeGame extends js.JSApp {
     canvas.height = 500 // (0.25 * g.window.innerHeight.cast[Int]).toInt
     canvas.width = canvas.width - (canvas.width % BLOCK_EDGE_SIZE)
     canvas.height = canvas.height - (canvas.height % BLOCK_EDGE_SIZE)
-    //    dom.document.getElementById("playground").appendChild(canvas)
-
-    val game = new Game(dom.document.getElementById("playground"), canvas)
+    new Game(dom.document.getElementById("battle-field"), canvas)
   }
 
 }

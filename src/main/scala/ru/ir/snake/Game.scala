@@ -1,19 +1,13 @@
-package ru.ir
+package ru.ir.snake
 
 import org.scalajs.dom
 import org.scalajs.dom._
 import org.scalajs.dom.ext._
-import org.scalajs.dom.raw.{Event, HTMLCanvasElement}
-import ru.ir.SnakeGame._
+import org.scalajs.dom.raw.HTMLCanvasElement
+import ru.ir.snake.SnakeGame._
 
 import scala.scalajs.js
 import scala.scalajs.js.Dynamic.{global => g}
-import scalatags.JsDom.all._
-
-class GameContext {
-  var interval = 500
-  var points = 0
-}
 
 class Game(node: Element, canvas: HTMLCanvasElement) {
   implicit val context = canvas.getContext("2d").cast[CanvasRenderingContext2D]
@@ -69,20 +63,5 @@ class Game(node: Element, canvas: HTMLCanvasElement) {
     context.fillText(GAME_OVER, canvas.width / 2, canvas.height / 2)
   }
 
-  def restart() = {
-    grid = new Grid(canvas.width, canvas.height)
-    bounds = new Walls(grid)
-    food = new Food(grid)
-    snake = new Snake(grid)
-    start()
-  }
-
-  val restartButton = button("Restart", `class` := "btn btn-default").render
-  restartButton.onclick = (e: Event) => {
-    e.preventDefault()
-    restart()
-  }
-
-  val battleFieldBlock = div(`class` := "battle-field", width := 500, height := 500, canvas)
-  node.appendChild(battleFieldBlock.render)
+  node.appendChild(canvas)
 }

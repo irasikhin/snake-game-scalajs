@@ -1,6 +1,6 @@
-package ru.ir
+package ru.ir.snake
 
-import ru.ir.SnakeGame._
+import SnakeGame._
 
 class Snake(grid: Grid) {
   val baseSize = 3

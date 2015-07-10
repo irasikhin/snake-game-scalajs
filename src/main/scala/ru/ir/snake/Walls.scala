@@ -1,6 +1,6 @@
-package ru.ir
+package ru.ir.snake
 
-import ru.ir.SnakeGame._
+import SnakeGame._
 
 class Walls(grid: Grid) {
   val walls = for {

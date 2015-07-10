@@ -1,7 +1,7 @@
-package ru.ir
+package ru.ir.snake
 
 import org.scalajs.dom._
-import ru.ir.SnakeGame._
+import SnakeGame._
 
 case class Cell(x: Int, y: Int)
 
