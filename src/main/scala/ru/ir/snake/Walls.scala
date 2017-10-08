@@ -1,21 +1,16 @@
 package ru.ir.snake
 
-import SnakeGame._
+import ru.ir.snake.SnakeGame._
 
-class Walls(grid: Grid) {
-  val walls = for {
-    i <- 0 until grid.vertical
-    j <- 0 until grid.horizontal
-    if i == 0 || i == grid.vertical - 1 || j == 0 || j == grid.horizontal - 1
+class Walls(private val grid: Grid) extends UiStep {
+  private val walls = for {
+    i <- 0 until grid.vRowsSize
+    j <- 0 until grid.hRowsSize
+    if i == 0 || i == grid.vRowsSize - 1 || j == 0 || j == grid.hRowsSize - 1
   } yield Cell(j, i)
 
-  walls.foreach(grid.put(_, WALL))
+  walls.foreach(grid.setColor(_, WALL))
 
-  def step() = {
-    //      bounds.foreach(cell => {
-    //        if (grid.get(cell) != BOUND) {
-    //          throw new IllegalStateException()
-    //        }
-    //      })
+  override def doStep(): Unit = {
   }
 }

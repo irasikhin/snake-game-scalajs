@@ -9,26 +9,25 @@ import ru.ir.snake.SnakeGame._
 import scala.scalajs.js
 import scala.scalajs.js.Dynamic.{global => g}
 
-class Game(node: Element, canvas: HTMLCanvasElement) {
-  implicit val context = canvas.getContext("2d").cast[CanvasRenderingContext2D]
-  val GAME_OVER = "GAME OVER"
+class Game(private val blockSize: Int, private val node: Element, private val canvas: HTMLCanvasElement) extends UiStep {
+  private implicit val context: CanvasRenderingContext2D = canvas.getContext("2d").cast[CanvasRenderingContext2D]
+  private val GAME_OVER = "GAME OVER"
+  private val KEY_CODES = Map(37 -> LEFT, 38 -> UP, 39 -> RIGHT, 40 -> DOWN)
 
-  var grid = new Grid(canvas.width, canvas.height)
-  var bounds = new Walls(grid)
-  var food = new Food(grid)
-  var snake = new Snake(grid)
-  var interval = -1
+  private val grid = new Grid(blockSize, canvas.width, canvas.height)
+  private val walls = new Walls(grid)
+  private val food = new Food(grid)
+  private val snake = new Snake(grid)
+  private var interval = -1
 
-  val keyCodes = Map(37 -> LEFT, 38 -> UP, 39 -> RIGHT, 40 -> DOWN)
-
-  val keysHandler: js.Function1[dom.KeyboardEvent, Any] = (e: dom.KeyboardEvent) => {
+  private val keysHandler: js.Function1[dom.KeyboardEvent, Any] = (e: dom.KeyboardEvent) => {
     e.preventDefault()
-    keyCodes.get(e.keyCode).foreach(direction => {
+    KEY_CODES.get(e.keyCode).foreach(direction => {
       snake.setDirection(direction)
       dom.clearInterval(interval)
-      step()
+      doStep()
       interval = dom.setInterval(() => {
-        step()
+        doStep()
       }, 100)
       false
     })
@@ -38,16 +37,16 @@ class Game(node: Element, canvas: HTMLCanvasElement) {
 
   def start(): Unit = {
     interval = dom.setInterval(() => {
-      step()
+      doStep()
     }, 100)
 
     g.addEventListener("keyup", keysHandler, false)
   }
 
-  def step(): Unit = {
-    snake.step()
-    food.step()
-    bounds.step()
+  override def doStep(): Unit = {
+    snake.doStep()
+    food.doStep()
+    walls.doStep()
 
     if (snake.crashed) {
       end()

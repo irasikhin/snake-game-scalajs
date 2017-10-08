@@ -26,7 +26,7 @@ object SnakeGame extends js.JSApp {
     canvas.height = 500 // (0.25 * g.window.innerHeight.cast[Int]).toInt
     canvas.width = canvas.width - (canvas.width % BLOCK_EDGE_SIZE)
     canvas.height = canvas.height - (canvas.height % BLOCK_EDGE_SIZE)
-    new Game(dom.document.getElementById("battle-field"), canvas)
+    new Game(BLOCK_EDGE_SIZE, dom.document.getElementById("battle-field"), canvas)
   }
 
 }

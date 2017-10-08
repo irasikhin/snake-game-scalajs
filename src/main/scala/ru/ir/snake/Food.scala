@@ -1,21 +1,25 @@
 package ru.ir.snake
 
-import SnakeGame._
+import ru.ir.snake.SnakeGame._
 
-class Food(grid: Grid) {
-  var current: Cell = null
-  val random = scala.util.Random
+class Food(private val grid: Grid) extends UiStep {
+  private val random = scala.util.Random
+  private var current: Option[Cell] = None
 
-  private def generate(): Cell = {
-    val cells = grid.getFreeCells
-    val cell = cells(random.nextInt(cells.size))
-    grid.put(cell, FOOD)
-    cell
-  }
-
-  def step() = {
-    if (current == null || grid.get(current) != FOOD) {
-      current = generate()
+  def doStep(): Unit = {
+    current = current match {
+      case Some(c) => if (grid.getColor(c) != FOOD) {
+        generateNext()
+      } else {
+        current
+      }
+      case None => generateNext()
     }
   }
+
+  private def generateNext(): Option[Cell] = Option(grid.getFreeCells).filter(_.nonEmpty).map(cells => {
+    val cell = cells(random.nextInt(cells.size))
+    grid.setColor(cell, FOOD)
+    cell
+  })
 }

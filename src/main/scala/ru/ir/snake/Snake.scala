@@ -1,22 +1,12 @@
 package ru.ir.snake
 
-import SnakeGame._
+import ru.ir.snake.SnakeGame._
 
-class Snake(grid: Grid) {
-  val baseSize = 3
-  private val center = grid.getCenterCell
-  var snake: Array[Cell] = Array(center, Cell(center.x, center.y - 1), Cell(center.x, center.y - 2))
-  var direction: Int = 0
+class Snake(private val grid: Grid) extends UiStep {
   var crashed = false
-
-  private def draw(snake: Array[Cell]): Unit = {
-    grid.put(snake.last, SNAKE_HEAD)
-    snake.init.foreach(cell => grid.put(cell, SNAKE))
-  }
-
-  private def hide(snake: Array[Cell]): Unit = {
-    snake.foreach(grid.clear)
-  }
+  private val center = grid.getCenterCell
+  private var snake: Array[Cell] = Array(center, Cell(center.x, center.y - 1), Cell(center.x, center.y - 2))
+  private var direction: Int = 0
 
   def setDirection(direction: Int): Unit = {
     if (!(this.direction == RIGHT && direction == LEFT || this.direction == LEFT && direction == RIGHT ||
@@ -25,7 +15,7 @@ class Snake(grid: Grid) {
     }
   }
 
-  def step(): Unit = {
+  override def doStep(): Unit = {
     val oldSnake = snake
     val last = oldSnake.last
     val cell = this.direction match {
@@ -34,7 +24,7 @@ class Snake(grid: Grid) {
       case LEFT => Cell(last.x - 1, last.y)
       case RIGHT => Cell(last.x + 1, last.y)
     }
-    grid.get(cell) match {
+    grid.getColor(cell) match {
       case FOOD => snake = snake.:+(cell)
       case CLEAN => snake = snake.tail.:+(cell)
       case WALL => crashed = true // game over
@@ -42,5 +32,14 @@ class Snake(grid: Grid) {
     }
     hide(oldSnake)
     draw(snake)
+  }
+
+  private def draw(snake: Array[Cell]): Unit = {
+    grid.setColor(snake.last, SNAKE_HEAD)
+    snake.init.foreach(cell => grid.setColor(cell, SNAKE))
+  }
+
+  private def hide(snake: Array[Cell]): Unit = {
+    snake.foreach(grid.clearColor)
   }
 }

@@ -1,51 +1,42 @@
 package ru.ir.snake
 
 import org.scalajs.dom._
-import SnakeGame._
+import ru.ir.snake.SnakeGame._
 
 case class Cell(x: Int, y: Int)
 
-class Grid(width: Int, height: Int)(implicit context: CanvasRenderingContext2D) {
+class Grid(private val blockSize: Int, private val width: Int, private val height: Int)(implicit context: CanvasRenderingContext2D) {
   type Color = String
 
-  val blockSize = 15
-  val horizontal = (width - (width % blockSize)) / blockSize
-  val vertical = (height - (height % blockSize)) / blockSize
-  private val bucket: scala.collection.mutable.Map[Cell, Color] = scala.collection.mutable.Map[Cell, Color]()
+  val hRowsSize: Int = (width - (width % blockSize)) / blockSize
+  val vRowsSize: Int = (height - (height % blockSize)) / blockSize
 
-  refresh()
-
-  def refresh(): Unit = {
-    for (i <- 0 until horizontal; j <- 0 until vertical) {
-      put(Cell(i, j), CLEAN)
-    }
+  private val colors: scala.collection.mutable.Map[Cell, Color] = scala.collection.mutable.Map[Cell, Color]()
+  for (i <- 0 until hRowsSize; j <- 0 until vRowsSize) {
+    setColor(Cell(i, j), CLEAN)
   }
 
-  def get(cell: Cell): Color = bucket.getOrElse(cell, CLEAN)
+  def getColor(cell: Cell): Color = colors.getOrElse(cell, CLEAN)
 
-  def put(cell: Cell, color: Color): Unit = {
+  def setColor(cell: Cell, color: Color): Unit = {
     context.fillStyle = color
     context.fillRect(cell.x * blockSize, cell.y * blockSize, blockSize, blockSize)
-    bucket.put(cell, color)
+    colors.put(cell, color)
   }
 
-  def clear(cell: Cell) = {
+  def clearColor(cell: Cell): Unit = {
     context.fillStyle = CLEAN
     context.fillRect(cell.x * blockSize, cell.y * blockSize, blockSize, blockSize)
-    bucket -= cell
+    colors -= cell
   }
 
-  def getCenterCell: Cell = {
-    val i: Int = vertical / 2
-    val j: Int = horizontal / 2
-    Cell(j, i)
-  }
+  def getCenterCell: Cell = Cell(hRowsSize / 2, vRowsSize / 2)
 
   def getFreeCells: Seq[Cell] = for {
-    i <- 0 until vertical
-    j <- 0 until horizontal
+    i <- 0 until vRowsSize
+    j <- 0 until hRowsSize
     cell = Cell(j, i)
-    if !bucket.contains(cell)
+    if colors.getOrElse(cell, CLEAN) == CLEAN
   } yield cell
 
 }
